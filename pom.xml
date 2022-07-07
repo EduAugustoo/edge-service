@@ -87,9 +87,11 @@
                         </env>
                     </image>
                     <docker>
-                        <username>${docker-registry.username}</username>
-                        <password>${docker-registry.password}</password>
-                        <url>${docker-registry.url}</url>
+                        <publishRegistry>
+                            <username>${docker-registry.username}</username>
+                            <password>${docker-registry.password}</password>
+                            <url>${docker-registry.url}</url>
+                        </publishRegistry>
                     </docker>
                 </configuration>
             </plugin>
