@@ -13,20 +13,47 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>edge-service</name>
     <description>edge-service</description>
+
     <properties>
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
+        <test-containers.version>1.17.2</test-containers.version>
+        <docker-registry.username>username</docker-registry.username>
+        <docker-registry.password>password</docker-registry.password>
+        <docker-registry.url>url</docker-registry.url>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
         </dependency>
     </dependencies>
     <dependencyManagement>
@@ -38,6 +65,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${test-containers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -46,6 +80,18 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <env>
+                            <BP_JVM_VERSION>11.*</BP_JVM_VERSION>
+                        </env>
+                    </image>
+                    <docker>
+                        <username>${docker-registry.username}</username>
+                        <password>${docker-registry.password}</password>
+                        <url>${docker-registry.url}</url>
+                    </docker>
+                </configuration>
             </plugin>
         </plugins>
     </build>
