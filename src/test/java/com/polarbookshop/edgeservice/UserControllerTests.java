@@ -54,6 +54,7 @@ public class UserControllerTests {
                     builder.claim(StandardClaimNames.PREFERRED_USERNAME, expectedUser.getUsername());
                     builder.claim(StandardClaimNames.GIVEN_NAME, expectedUser.getFirstName());
                     builder.claim(StandardClaimNames.FAMILY_NAME, expectedUser.getLastName());
+                    builder.claim("roles", expectedUser.getRoles());
                 }
         );
     }
