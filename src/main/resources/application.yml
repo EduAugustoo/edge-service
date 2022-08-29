@@ -84,7 +84,6 @@ spring:
     timeout: 10m
     redis:
       namespace: polar:edge
-
   security:
     oauth2:
       client:
@@ -109,6 +108,31 @@ resilience4j:
     configs:
       default:
         timeout-duration: 5s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude: health,prometheus
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include:
+            - readinessState
+            - redis
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
 logging:
+  group:
+    circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker
   level:
-    io.github.resilience4j: debug
+    circuitbreaker: info
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
